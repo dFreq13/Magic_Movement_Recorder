@@ -1,0 +1,26 @@
+name: Build x64 DLL
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Configure CMake x64
+      run: cmake -B build -S . -A x64
+
+    - name: Build Release
+      run: cmake --build build --config Release
+
+    - name: Upload DLL
+      uses: actions/upload-artifact@v4
+      with:
+        name: Magic_Movement_Recorder_x64
+        path: build/**/Release/*.dll
